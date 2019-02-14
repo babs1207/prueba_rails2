@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   before_action :authenticate_user!, except: :index
-  before_action :set_todo, only: [:show, :edit, :update, :destroy, :complete]
+  before_action :set_todo, only: [:show, :edit, :update, :destroy, :complete, :remove_complete]
 
   # GET /todos
   # GET /todos.json
@@ -66,6 +66,16 @@ class TodosController < ApplicationController
     @todo.completed = true
     @todo.save
     redirect_to root_path, notice: 'Todo marcado con exito' 
+  end
+
+  def remove_complete
+    @todo.completed = false
+    @todo.save
+    redirect_to root_path, notice: 'Todo desmarcado con exito' 
+  end
+
+  def my_todos
+    @todos = Todo.where(completed: true)
   end
 
   private
